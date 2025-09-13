@@ -1,0 +1,34 @@
+{
+  "name": "plugins-forum-database",
+  "version": "1.0.0",
+  "description": "🗄️ Скрипты для настройки и управления базой данных Supabase",
+  "main": "populate.js",
+  "scripts": {
+    "setup": "echo \"📋 Выполните SQL скрипт setup.sql в Supabase SQL Editor\" && echo \"🔗 https://app.supabase.com/project/YOUR_PROJECT_ID/sql\"",
+    "populate": "node populate.js",
+    "install-deps": "npm install",
+    "check-env": "node -e \"require('dotenv').config(); console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Установлен' : '❌ Не установлен'); console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? '✅ Установлен' : '❌ Не установлен');\"",
+    "init": "npm run install-deps && npm run check-env && npm run populate",
+    "help": "echo \"🚀 Доступные команды:\" && echo \"  npm run setup     - Инструкции по настройке SQL\" && echo \"  npm run populate  - Заполнение базы данных\" && echo \"  npm run check-env - Проверка переменных окружения\" && echo \"  npm run init      - Полная инициализация\""
+  },
+  "keywords": [
+    "supabase",
+    "database",
+    "plugins",
+    "automation",
+    "setup"
+  ],
+  "author": "Plugins Forum",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}

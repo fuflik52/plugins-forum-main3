@@ -1,0 +1,52 @@
+name: Crawl Repositories
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  crawl-repositories:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+
+    - name: Run repository crawler with timeout
+      run: |
+        cd backend
+        timeout 10m npm run crawl || true
+
+    - name: Check for changes
+      id: git-check
+      run: |
+        cd backend
+        if git diff --quiet HEAD -- output/; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Commit and push changes
+      if: steps.git-check.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add backend/output/crawled_plugins.json backend/output/crawler_state.json
+        git commit -m "chore(crawl): update crawled plugins [skip ci]" || exit 0
+        git push

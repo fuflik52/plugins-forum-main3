@@ -1,0 +1,25 @@
+{
+  "name": "oxide-rust-plugins-indexer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Index Rust (Oxide) C# plugins from GitHub code search into a JSON file with metadata.",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node dist/index.js",
+    "crawl-repos": "tsc -p . && node dist/repository-crawler.js",
+    "crawl": "npm run crawl-repos"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "dotenv": "^17.2.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
